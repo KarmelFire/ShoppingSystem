@@ -10,6 +10,10 @@ import java.awt.*;
  */
 
 public class getMiddlelocation {
+
+
+
+
     /*
      * @Author Langxecho
             * @Description //TODO 返回一个数组，数组里装的是屏幕中央坐标的x和y
@@ -17,7 +21,7 @@ public class getMiddlelocation {
      * @Param 
             * @return 
             **/
-    public int[] getMiddlelocation(JFrame frame){
+    public static int[] getMiddlelocate(JFrame frame){
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();  //获取到屏幕尺寸
         int x = (int) ((screenSize.getWidth() - frame.getWidth()) / 2);   //居中位置就是：屏幕尺寸/2 - 窗口尺寸/2
         int y = (int) ((screenSize.getHeight() - frame.getHeight()) / 2);
