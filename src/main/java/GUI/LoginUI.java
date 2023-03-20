@@ -7,7 +7,8 @@ import java.awt.*;
 
 
 public class LoginUI extends JFrame {
-    public static void showlogin() {
+    public static void showLogin() {
+//        界面设置
         JFrame login = new JFrame();
         login.setSize(400, 300);
         login.setTitle("账户登录");
@@ -55,4 +56,3 @@ public class LoginUI extends JFrame {
 //        login.setVisible(true);
     }
 }
-;
