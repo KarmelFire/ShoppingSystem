@@ -1,4 +1,9 @@
 package GUI;
 
-public class LoginUI {
+import javax.swing.*;
+
+public class LoginUI extends JPanel {
+    public LoginUI(String title) {
+
+    }
 }
