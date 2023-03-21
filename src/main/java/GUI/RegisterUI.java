@@ -1,21 +1,24 @@
 package GUI;
 
 import Utiltool.GuiUtil.getMiddlelocation;
+import Utiltool.GuiUtil.showError;
 
 import javax.swing.*;
+
+
 
 public class RegisterUI extends JFrame{
     public static void showRegister() {
 //        界面设置
-        JFrame login = new JFrame();
-        login.setSize(400, 300);
-        login.setTitle("账户注册");
-        login.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        JFrame register = new JFrame();
+        register.setSize(400, 300);
+        register.setTitle("账户注册");
+        register.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 //        容器设置
         JPanel root = new JPanel();
-        login.setContentPane(root);
-        login.setResizable(false);
+        register.setContentPane(root);
+        register.setResizable(false);
         root.setLayout(null);
 
 //        输入用户名
@@ -48,12 +51,24 @@ public class RegisterUI extends JFrame{
 //        注册按钮
         JButton button = new JButton("注册");
         button.setBounds(145, 170, 120, 30);
+        button.addActionListener((e) -> {
+            showError.showError("两次密码不一致");
+        });
         root.add(button);
 
-//        窗口位置居中
-        int[] location = new getMiddlelocation().getMiddlelocation(login);
-        login.setLocation(location[0], location[1]);
+//        返回按钮
+        JButton button1 = new JButton("返回");
+        button1.setBounds(300, 220, 60, 25);
+        button1.addActionListener((e) -> {
+            LoginUI.showLogin();
+            register.dispose();
+        });
+        root.add(button1);
 
-//        login.setVisible(true);
+//        窗口位置居中
+        int[] location = new getMiddlelocation().getMiddlelocation(register);
+        register.setLocation(location[0], location[1]);
+
+        register.setVisible(true);
     }
 }

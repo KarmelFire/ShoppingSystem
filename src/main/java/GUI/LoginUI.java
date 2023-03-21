@@ -1,9 +1,12 @@
 package GUI;
 
 import Utiltool.GuiUtil.getMiddlelocation;
+import Utiltool.GuiUtil.showError;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 
 public class LoginUI extends JFrame {
@@ -42,17 +45,51 @@ public class LoginUI extends JFrame {
         JButton button = new JButton("登录");
         button.setBounds(145, 160, 120, 30);
         root.add(button);
+        button.addActionListener((e) -> {
+            showError.showError("用户名或密码错误");
+        });
 
+//        注册跳转
         JLabel label = new JLabel("点击注册账号");
-        label.setBounds(173, 190, 100, 30);
+        label.setBounds(173, 190, 70, 25);
+        label.setForeground(Color.gray);
         Font font = new Font("微软雅黑", Font.PLAIN, 10);
         label.setFont(font);
+        label.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                RegisterUI.showRegister();
+                login.dispose();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                label.setForeground(Color.blue);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                label.setForeground(Color.gray);
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                label.setForeground(Color.blue);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                label.setForeground(Color.gray);
+            }
+        });
+
         root.add(label);
 
 //        窗口位置居中
         int[] location = new getMiddlelocation().getMiddlelocation(login);
         login.setLocation(location[0], location[1]);
 
-//        login.setVisible(true);
+//        显示窗口
+        login.setVisible(true);
     }
 }
