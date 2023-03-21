@@ -19,6 +19,9 @@ public class ReviewUI {
 JFrame addreview = new JFrame("添加评论");
     JButton backbotton = new JButton("返回");//返回按钮
     JButton addreviewbotton = new JButton("添加评论");//添加评论
+    JTextArea input = new JTextArea();//评论区评论框
+    JButton reviewback = new JButton("返回");//添加评论界面的返回按钮
+    JButton submit = new JButton("提交评论");//添加评论界面的提交按钮
 
 
     /*
@@ -113,15 +116,42 @@ JButton generateaddreviewbotton(){
     addreviewbotton.setSize(100,30);
     addreviewbotton.setLocation(110,520);
     review.add(addreviewbotton);
+    addreviewbotton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            //这里添加评论模块
+            addreview.setSize(400,300);
+            int a[] = getMiddlelocation.getMiddlelocate(addreview);
+            addreview.setLocation(a[0],a[1]);
+            addreview.setLayout(new FlowLayout(FlowLayout.LEFT));
+        //评论文本区域的设置
+            input.setPreferredSize(new Dimension(380,200));
+            addreview.add(input);
+            addreview.setVisible(true);
+            //返回按钮的设置
+            reviewback.setSize(80,30);
+            reviewback.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    addreview.dispose();
+                }
+            });
+            addreview.add(reviewback);
+            //提交评论按钮的添加
+            submit.setSize(80,30);
+            addreview.add(submit);
+            submit.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String str = input.getText();
+                    System.out.println(str);
+//                    这里的监听器用来返回新加评论的内容
+                }
+            });
+        }
+    });
     return addreviewbotton;
 
 }
 
-JFrame addreviewarea(){
-    addreview.setSize(400,300);
-    int a[] = getMiddlelocation.getMiddlelocate(addreview);
-    addreview.setLocation(a[0],a[1]);
-    addreview.setVisible(true);
-    return addreview;
-}
 }
