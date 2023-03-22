@@ -16,11 +16,11 @@ public class LoginUI extends JFrame {
         login.setSize(400, 300);
         login.setTitle("账户登录");
         login.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        login.setResizable(false);
 
 //        容器设置
         JPanel root = new JPanel();
         login.setContentPane(root);
-        login.setResizable(false);
         root.setLayout(null);
 
 //        输入用户名
