@@ -66,7 +66,7 @@ public class RegisterUI extends JFrame{
         root.add(button1);
 
 //        窗口位置居中
-        int[] location = new getMiddlelocation().getMiddlelocation(register);
+        int[] location = getMiddlelocation.getMiddlelocate(register);
         register.setLocation(location[0], location[1]);
 
         register.setVisible(true);

@@ -86,7 +86,7 @@ public class LoginUI extends JFrame {
         root.add(label);
 
 //        窗口位置居中
-        int[] location = new getMiddlelocation().getMiddlelocation(login);
+        int[] location = getMiddlelocation.getMiddlelocate(login);
         login.setLocation(location[0], location[1]);
 
 //        显示窗口
