@@ -36,7 +36,7 @@ public JFrame generatereview(){
     review.setSize(800,600);
     review.setTitle("评论区");
     review.setLayout(null);
-    int[] a = new getMiddlelocation().getMiddlelocate(review);
+    int[] a = getMiddlelocation.getMiddlelocate(review);
     review.setLocation(a[0],a[1]);
 
     scro.setSize(750,500);

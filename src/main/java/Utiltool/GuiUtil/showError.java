@@ -15,11 +15,11 @@ public class showError {
         JFrame error = new JFrame();
         error.setSize(250, 150);
         error.setTitle("出错啦");
+        error.setResizable(false);
 
 //        容器设置
         JPanel root = new JPanel();
         error.setContentPane(root);
-        error.setResizable(false);
         error.setLayout(null);
 
 //        输入错误提示
