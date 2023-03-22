@@ -37,7 +37,7 @@ public class showError {
         root.add(button);
 
 //        窗口位置居中
-        int[] location = new getMiddlelocation().getMiddlelocation(error);
+        int[] location = getMiddlelocation.getMiddlelocate(error);
         error.setLocation(location[0], location[1]);
 
         error.setVisible(true);
