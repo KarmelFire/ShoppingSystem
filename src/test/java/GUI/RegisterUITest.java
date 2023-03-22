@@ -1,12 +1,9 @@
 package GUI;
 
-import javax.swing.*;
-
 import static org.junit.jupiter.api.Assertions.*;
 
-class LoginUITest {
+class RegisterUITest {
     public static void main(String[] args) {
-        LoginUI.showLogin();
+        RegisterUI.showRegister();
     }
-
 }
