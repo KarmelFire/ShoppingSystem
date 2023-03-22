@@ -14,11 +14,11 @@ public class RegisterUI extends JFrame{
         register.setSize(400, 300);
         register.setTitle("账户注册");
         register.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        register.setResizable(false);
 
 //        容器设置
         JPanel root = new JPanel();
         register.setContentPane(root);
-        register.setResizable(false);
         root.setLayout(null);
 
 //        输入用户名
