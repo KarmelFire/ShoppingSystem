@@ -14,6 +14,8 @@ public class BuyinforUI extends JPanel {
                 return false;
             }
         };
+        table.getTableHeader().setReorderingAllowed(false);   //不可整列移动
+        table.getTableHeader().setResizingAllowed(false);   //不可拉动表格
 
 //        滚动
         JScrollPane scrollPane = new JScrollPane(
