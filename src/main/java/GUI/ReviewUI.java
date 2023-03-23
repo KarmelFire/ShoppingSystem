@@ -16,7 +16,7 @@ public class ReviewUI {
     JFrame review = new JFrame();//外层窗口
     ScrollPane scro = new ScrollPane();//评论区大滚动面板
     JPanel inner = new JPanel();//滚动面板内的展示面板
-JFrame addreview = new JFrame("添加评论");
+    JFrame addreview = new JFrame("添加评论");
     JButton backbotton = new JButton("返回");//返回按钮
     JButton addreviewbotton = new JButton("添加评论");//添加评论
     JTextArea input = new JTextArea();//评论区评论框
