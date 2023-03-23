@@ -7,9 +7,13 @@ public class BuyinforUI extends JPanel {
         setLayout(null);
 
 //        表格
-        String[] rowName = {"商品", "购买时间", "购买数量","价格(元)"};
+        String[] columnName = {"商品", "购买时间", "购买数量","价格(元)"};
         String[][] tableValues = {{"农夫山泉", "2023/3/22 19:28:36", "5", "10"}, {"冰红茶", "2023/3/22 19:29:44", "5", "15"}};
-        JTable table = new JTable(tableValues, rowName);
+        JTable table = new JTable(tableValues, columnName) {
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
 
 //        滚动
         JScrollPane scrollPane = new JScrollPane(

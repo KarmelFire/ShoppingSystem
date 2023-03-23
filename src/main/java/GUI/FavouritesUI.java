@@ -7,9 +7,13 @@ public class FavouritesUI extends JPanel {
         setLayout(null);
 
 //        表格
-        String[] rowName = {"商品", "库存", "购买数量","价格(元)"};
+        String[] colunmName = {"商品", "库存", "购买数量","价格(元)"};
         String[][] tableValues = {{"农夫山泉", "50", "5", "10"}, {"冰红茶", "50", "5", "15"}};
-        JTable table = new JTable(tableValues, rowName);
+        JTable table = new JTable(tableValues, colunmName) {
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
 
 //        滚动
         JScrollPane scrollPane = new JScrollPane(
