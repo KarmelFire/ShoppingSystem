@@ -46,7 +46,8 @@ public class LoginUI extends JFrame {
         button.setBounds(145, 160, 120, 30);
         root.add(button);
         button.addActionListener((e) -> {
-            showError.showError("用户名或密码错误");
+            UserUI.showUser();
+            login.dispose();
         });
 
 //        注册跳转

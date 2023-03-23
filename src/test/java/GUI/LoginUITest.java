@@ -8,5 +8,4 @@ class LoginUITest {
     public static void main(String[] args) {
         LoginUI.showLogin();
     }
-
 }
