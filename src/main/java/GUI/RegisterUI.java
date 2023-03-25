@@ -52,7 +52,7 @@ public class RegisterUI extends JFrame{
         JButton button = new JButton("注册");
         button.setBounds(145, 170, 120, 30);
         button.addActionListener((e) -> {
-            showError.showError("两次密码不一致");
+            showError.showError("出错啦", "两次密码不一致");
         });
         root.add(button);
 

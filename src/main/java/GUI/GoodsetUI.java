@@ -45,7 +45,7 @@ public class GoodsetUI extends JPanel {
         checkItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                BuyUI.showBuy();
             }
         });
 
@@ -86,7 +86,6 @@ public class GoodsetUI extends JPanel {
 
             @Override
             public void mouseExited(MouseEvent e) {
-
 
             }
         });

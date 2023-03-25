@@ -10,11 +10,11 @@ import javax.swing.*;
  * @Version 1.0
  */
 public class showError {
-    public static void showError(String content) {
+    public static void showError(String title, String content) {
 //        界面设置
         JFrame error = new JFrame();
         error.setSize(250, 150);
-        error.setTitle("出错啦");
+        error.setTitle(title);
         error.setResizable(false);
 
 //        容器设置
