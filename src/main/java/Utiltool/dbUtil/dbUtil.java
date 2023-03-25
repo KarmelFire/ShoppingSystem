@@ -1,0 +1,47 @@
+package Utiltool.dbUtil;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+/**
+ * @author 19086
+ * @version 1.0
+ * Create by 2023/3/25 13:12
+ */
+
+public class dbUtil {
+    //mysql驱动名
+    private static String driverName = "com.mysql.cj.jdbc.Driver";
+    //数据库连接地址
+    private static String url = "jdbc:mysql://101.200.120.36:3306/shopping_system?useUnicode=true&characterEncoding=utf-8";
+    //用户名
+    private static String userName = "root";
+    //密码
+    private static String password = "ssy212";
+    /*
+     * @Author Langxecho
+            * @Description //TODO 获取数据库连接
+     * @Date 13:37 2023/3/25
+     * @Param
+            * @return
+            **/
+    public Connection getConnection() throws Exception {
+    Class.forName(driverName);
+    Connection connection = DriverManager.getConnection(url,userName,password);
+    return connection;
+    }
+    /*
+     * @Author Langxecho
+     * @Description //TODO 关闭连接
+     * @Date 13:41 2023/3/25
+     * @Param
+     * @return
+     **/
+    public void closeConnection(Connection con) throws SQLException{
+    if(con != null){
+        con.close();
+        System.out.println("数据库连接关闭");
+    }
+    }
+}
