@@ -1,8 +1,8 @@
 package GUI;
 
+import Backcode.useradd;
 import Utiltool.GuiUtil.getMiddlelocation;
 import Utiltool.GuiUtil.showError;
-
 import javax.swing.*;
 
 
@@ -52,7 +52,18 @@ public class RegisterUI extends JFrame{
         JButton button = new JButton("注册");
         button.setBounds(145, 170, 120, 30);
         button.addActionListener((e) -> {
-            showError.showError("出错啦", "两次密码不一致");
+          if(Psd.getText().equals(Psd2.getText())){
+              try {
+                  useradd.creatAccount(Act.getText(),Psd.getText());
+                  showError.showError("success","恭喜您,注册成功");
+                  register.dispose();
+                  LoginUI.showLogin();
+              } catch (Exception ex) {
+                  System.out.println("注册失败");
+              }
+
+          }
+          else {showError.showError("出错","两次密码不一致");}
         });
         root.add(button);
 
