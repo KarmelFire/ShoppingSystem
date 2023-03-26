@@ -57,7 +57,8 @@ public class RegisterUI extends JFrame{
                   useradd.creatAccount(Act.getText(),Psd.getText());
                   showError.showError("success","恭喜您,注册成功");
                   register.dispose();
-                  LoginUI.showLogin();
+                  LoginUI ss = new LoginUI();
+                  ss.showLogin();
               } catch (Exception ex) {
                   System.out.println("注册失败");
               }
@@ -71,7 +72,8 @@ public class RegisterUI extends JFrame{
         JButton button1 = new JButton("返回");
         button1.setBounds(300, 220, 60, 25);
         button1.addActionListener((e) -> {
-            LoginUI.showLogin();
+            LoginUI ss = new LoginUI();
+            ss.showLogin();
             register.dispose();
         });
         root.add(button1);

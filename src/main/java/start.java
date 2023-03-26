@@ -1,8 +1,11 @@
+import GUI.LoginUI;
 import GUI.ReviewUI;
 
 public class start {
     public static void main(String[] args) {
-        ReviewUI a = new ReviewUI();
-        a.generatereview();
+        LoginUI a = new LoginUI();
+        a.showLogin();
+
+
     }
 }

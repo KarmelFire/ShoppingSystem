@@ -8,7 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class UserUI extends JFrame{
-    public static void showUser() {
+    String getuser = null;
+    public void showUser() {
+        System.out.println("用户主界面得到的用户名为" + getuser);
 //        用户界面
         JFrame user = new JFrame();
         user.setSize(800, 600);
@@ -33,7 +35,7 @@ public class UserUI extends JFrame{
         GoodsetUI goodsetUI = new GoodsetUI();
         panel.add(goodsetUI, "goodsetUI");
 
-        UserinforUI userinforUI = new UserinforUI();
+        UserinforUI userinforUI = new UserinforUI(getuser);
         panel.add(userinforUI, "userinforUI");
 
         FavouritesUI favouritesUI = new FavouritesUI();
@@ -123,5 +125,9 @@ public class UserUI extends JFrame{
 
         user.setVisible(true);
 
+    }
+
+    public void setGetuser(String getuser) {
+        this.getuser = getuser;
     }
 }

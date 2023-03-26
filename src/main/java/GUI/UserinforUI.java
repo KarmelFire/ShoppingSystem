@@ -1,11 +1,18 @@
 package GUI;
 
+import Utiltool.dbUtil.dbUtil;
+import org.springframework.jdbc.support.JdbcUtils;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class UserinforUI extends JPanel {
+    String getUser;
     String user = null;//用户名
     String id = null;//用户id
     String vip = "否";//是否是VIP
@@ -16,7 +23,28 @@ public class UserinforUI extends JPanel {
     //占位符
     String empty = "                                                                                                                                                                                                                                                                                                                                                         ";
     JLabel emptys = new JLabel(empty);
-    public UserinforUI() {
+    public UserinforUI(String getUser) {
+        this.getUser = getUser;
+        //数据库加载设置
+        try{
+            System.out.println("元数据得到的用户名为"+getUser);
+            String sql = "select * from user where username =" + getUser;
+            dbUtil db = new dbUtil();
+            Connection con = db.getConnection();
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            user = rs.getString("username");
+            id = rs.getString("id");
+            int vipflag = rs.getInt("identity");
+            vip = (vipflag == 0 ? "否" : "是");
+            System.out.println("元数据加载成功");
+            db.closeConnection(con);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            System.out.println("元数据加载失败");
+        }
+        //--------------------------------
         setLayout(null);
         //信息承载面板设置
         JPanel undertake = new JPanel();
