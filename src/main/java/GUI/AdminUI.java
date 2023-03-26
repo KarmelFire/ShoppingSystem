@@ -1,15 +1,19 @@
 package GUI;
 
 import Utiltool.GuiUtil.getMiddlelocation;
+import Utiltool.GuiUtil.showError;
 import Utiltool.dbUtil.dbUtil;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 
 /*
  * @Author Langxecho
@@ -20,14 +24,14 @@ import java.sql.ResultSet;
         **/
 public class AdminUI {
     JScrollPane scro;//滚动面板
-    Object []columnName = new Object[]{"商品名","剩余数量","出售单价","零售价","商品id","类别"};//表格的字段名
+    Object []columnName = new Object[]{"商品名","类别","单价","折扣","进价","库存","商品ID"};//表格的字段名
     JFrame admin = new JFrame("管理员界面");//管理员界面主界面
     String user;//当前管理员的用户名
     String empty = "                                                                                                                                                                                                                             ";
     String empty1 = "                                                                                                                                                                                                                                                                                                                                                                             ";
     JLabel emptysmall = new JLabel(empty);//小占位符
     JLabel lable = new JLabel(empty1);//占位符,占用一整行
-    JButton addgoods = new JButton("增加商品");//增加商品按钮
+    JButton addgoods = new JButton("添加商品");//增加商品按钮
     JButton delgoods = new JButton("删除商品");//删除商品按钮
     JButton searchgoods = new JButton("查找商品");//查找商品按钮
     JButton exit = new JButton("退出");//退出系统按钮
@@ -76,6 +80,7 @@ public class AdminUI {
      * @Param
             * @return
             **/
+    public Object ID;
     void initbotton(){
         //添加商品按钮
         addgoods.setSize(60,20);
@@ -83,6 +88,11 @@ public class AdminUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //设置操作
+                try {
+                    addGoods();
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
         //删除商品按钮
@@ -91,6 +101,12 @@ public class AdminUI {
             @Override
             public void actionPerformed(ActionEvent e) {
 //                设置操作
+                ID = rowData[index][6];
+                try {
+                    delete();
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
         //查找商品按钮
@@ -99,6 +115,7 @@ public class AdminUI {
             @Override
             public void actionPerformed(ActionEvent e) {
 //                设置操作
+
             }
         });
         //退出系统按钮
@@ -124,9 +141,9 @@ public class AdminUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //设置操作
+
             }
         });
-
     }
     /*
      * @Author Langxecho
@@ -135,6 +152,7 @@ public class AdminUI {
      * @Param
             * @return
             **/
+    public Object[][] rowData;
     JTable inittable() throws Exception {
         //加载数据库
         String sql = "Select * from goods";
@@ -148,18 +166,166 @@ public class AdminUI {
         System.out.println("检索到了" + numbers + "数据");
         rs.beforeFirst();//指针归位
         //表格相关设置
-        Object [][]rowData = new Object[numbers][6];
+        rowData = new Object[numbers][7];
         while (rs.next()){
-            rowData[rs.getRow() - 1][0] = rs.getString("id");
-            rowData[rs.getRow() - 1][1] = rs.getString("discount");
+            rowData[rs.getRow() - 1][0] = rs.getString("name");
+            rowData[rs.getRow() - 1][1] = rs.getString("category");
             rowData[rs.getRow() - 1][2] = rs.getString("price");
-            rowData[rs.getRow() - 1][3] = rs.getString("store");
-            rowData[rs.getRow() - 1][4] = rs.getString("category");
-            rowData[rs.getRow() - 1][5] = rs.getString("portprice");
+            rowData[rs.getRow() - 1][3] = rs.getString("discount");
+            rowData[rs.getRow() - 1][4] = rs.getString("portprice");
+            rowData[rs.getRow() - 1][5] = rs.getString("store");
+            rowData[rs.getRow() - 1][6] = rs.getString("id");
         }
-        JTable table = new JTable(rowData,columnName);
+        JTable table = new JTable(rowData,columnName) {
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        table.getTableHeader().setReorderingAllowed(false);   //不可整列移动
+        table.getTableHeader().setResizingAllowed(false);   //不可拉动表格
         db.closeConnection(con);
+
+        table.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                index = table.rowAtPoint(e.getPoint());
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
         return table;
     }
+
+    JTextField Name = new JTextField();
+    JTextField Category = new JTextField();
+    JTextField Price = new JTextField();
+    JTextField Discount = new JTextField();
+    JTextField Portprice = new JTextField();
+    JTextField Store = new JTextField();
+    JTextField Id = new JTextField();
+//    选中行
+    public int index;
+
+
+    void addGoods() throws Exception {
+//        界面设置
+        JFrame frame = new JFrame("添加商品");
+        frame.setSize(400, 300);
+        frame.setResizable(false);
+
+//        面板设置
+        JPanel root = new JPanel();
+        frame.setContentPane(root);
+        root.setLayout(null);
+
+        JLabel name = new JLabel("商品名:");
+        name.setBounds(20, 15, 60, 30);
+        root.add(name);
+        Name.setBounds(80, 19, 110, 25);
+        root.add(Name);
+
+        JLabel category = new JLabel("类别:");
+        category.setBounds(210, 15, 60, 30);
+        root.add(category);
+        Category.setBounds(260, 19, 110, 25);
+        root.add(Category);
+
+        JLabel price = new JLabel("单价:");
+        price.setBounds(20, 60, 60, 30);
+        root.add(price);
+        Price.setBounds(80, 64, 110, 25);
+        root.add(Price);
+
+        JLabel discount = new JLabel("折扣:");
+        discount.setBounds(210, 60, 60, 30);
+        root.add(discount);
+        Discount.setBounds(260, 64, 110, 25);
+        root.add(Discount);
+
+        JLabel portprice = new JLabel("进价:");
+        portprice.setBounds(20, 105, 60, 30);
+        root.add(portprice);
+        Portprice.setBounds(80, 109, 110, 25);
+        root.add(Portprice);
+
+        JLabel store = new JLabel("库存:");
+        store.setBounds(210, 105, 60, 30);
+        root.add(store);
+        Store.setBounds(260, 109, 110, 25);
+        root.add(Store);
+
+        JLabel id = new JLabel("商品ID:");
+        id.setBounds(20, 150, 60, 30);
+        root.add(id);
+        Id.setBounds(80, 154, 110, 25);
+        root.add(Id);
+
+//        按钮设置
+        JButton yes = new JButton("添加");
+        yes.addActionListener((e) -> {
+            try {
+                add();
+                frame.dispose();
+                showError.showError("添加商品", "添加成功");
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+        yes.setBounds(120, 200, 60, 30);
+        root.add(yes);
+        JButton no = new JButton("取消");
+        no.addActionListener((e) -> {
+            frame.dispose();
+        });
+        no.setBounds(215, 200, 60, 30);
+        root.add(no);
+
+//        窗口位置居中
+        int[] location = getMiddlelocation.getMiddlelocate(frame);
+        frame.setLocation(location[0], location[1]);
+
+        frame.setVisible(true);
+    }
+
+    void add() throws Exception {
+        String sql = "insert into goods values ('"+Name.getText()+"', '"+Category.getText()+"', "+ Price.getText()+", "+Discount.getText()+", "+Portprice.getText()+", "+Store.getText()+", "+Id.getText()+")";
+        dbUtil dbUtil = new dbUtil();
+        Connection con = dbUtil.getConnection();
+        Statement statement = con.createStatement();
+        int num = statement.executeUpdate(sql);
+        System.out.println("成功添加" + num + "条商品");
+        statement.close();
+        dbUtil.closeConnection(con);
+    }
+
+    void delete() throws Exception {
+        String sql = "delete from goods where id =" + ID;
+        dbUtil dbUtil = new dbUtil();
+        Connection con = dbUtil.getConnection();
+        Statement statement = con.createStatement();
+        int num = statement.executeUpdate(sql);
+        System.out.println("成功删除" + num + "条商品");
+        statement.close();
+        dbUtil.closeConnection(con);
+    }
+
 
 }
