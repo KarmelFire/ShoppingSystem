@@ -28,11 +28,12 @@ public class UserinforUI extends JPanel {
         //数据库加载设置
         try{
             System.out.println("元数据得到的用户名为"+getUser);
-            String sql = "select * from user where username =" + getUser;
+            String sql = "select * from user where username = " + "'"+ getUser + "'";
             dbUtil db = new dbUtil();
             Connection con = db.getConnection();
             PreparedStatement pstmt = con.prepareStatement(sql);
             ResultSet rs = pstmt.executeQuery();
+            rs.next();
             user = rs.getString("username");
             id = rs.getString("id");
             int vipflag = rs.getInt("identity");
