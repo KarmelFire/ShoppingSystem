@@ -1,11 +1,15 @@
 package GUI;
 
 import Utiltool.GuiUtil.getMiddlelocation;
+import Utiltool.dbUtil.dbUtil;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 /*
  * @Author Langxecho
@@ -15,10 +19,8 @@ import java.awt.event.ActionListener;
         * @return
         **/
 public class AdminUI {
-    JScrollPane scro = new JScrollPane();//滚动面板
-
+    JScrollPane scro;//滚动面板
     Object []columnName = new Object[]{"商品名","剩余数量","出售单价","零售价","商品id","类别"};//表格的字段名
-    int numbers = 0;//表示表格中的行数,即有多少商品
     JFrame admin = new JFrame("管理员界面");//管理员界面主界面
     String user;//当前管理员的用户名
     String empty = "                                                                                                                                                                                                                             ";
@@ -50,8 +52,15 @@ public class AdminUI {
         //占位面板中的表格
 
         //外层滚动面板
-        //这里是生成表的地方,但是这边的刷新逻辑很复杂,之后要改写,这边就只是暂时用一下子罢了);
-        flashtable("null","null","null","null","null","null");
+        //生成表
+        try {
+            scro = new JScrollPane(inittable());//滚动面板
+            scro.setPreferredSize(new Dimension(770,440));
+            System.out.println("表格初始化成功");
+        } catch (Exception e) {
+            System.out.println("表格初始化失败");
+            e.printStackTrace();
+        }
         //----------------
         admin.add(scro);
         admin.add(managergood);
@@ -121,35 +130,36 @@ public class AdminUI {
     }
     /*
      * @Author Langxecho
-            * @Description //TODO 设置表格
+            * @Description //TODO 设初始化b表格
      * @Date 17:12 2023/3/22
      * @Param
             * @return
             **/
-    JTable settable(String name,String inventory,String soldprice,String importprice,String id,String type){
-        //这些形参分别是商品名,剩余数量,出售单价,进价,商品ID,类别
-        numbers++;
+    JTable inittable() throws Exception {
+        //加载数据库
+        String sql = "Select * from goods";
+        dbUtil db = new dbUtil();
+        Connection con = db.getConnection();
+        PreparedStatement pstmt = con.prepareStatement(sql,ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+        ResultSet rs = pstmt.executeQuery();
+        //获取记录行数
+        rs.last();
+        int numbers = rs.getRow();
+        System.out.println("检索到了" + numbers + "数据");
+        rs.beforeFirst();//指针归位
+        //表格相关设置
         Object [][]rowData = new Object[numbers][6];
+        while (rs.next()){
+            rowData[rs.getRow() - 1][0] = rs.getString("id");
+            rowData[rs.getRow() - 1][1] = rs.getString("discount");
+            rowData[rs.getRow() - 1][2] = rs.getString("price");
+            rowData[rs.getRow() - 1][3] = rs.getString("store");
+            rowData[rs.getRow() - 1][4] = rs.getString("category");
+            rowData[rs.getRow() - 1][5] = rs.getString("portprice");
+        }
         JTable table = new JTable(rowData,columnName);
-        rowData[numbers - 1][0] = name;
-        rowData[numbers - 1][1] = inventory;
-        rowData[numbers - 1][2] = soldprice;
-        rowData[numbers - 1][3] = importprice;
-        rowData[numbers - 1][4] = id;
-        rowData[numbers - 1][5] = type;
+        db.closeConnection(con);
         return table;
     }
-    /*
-     * @Author Langxecho
-            * @Description //TODO 刷新表格(增加)
-     * @Date 18:35 2023/3/22
-     * @Param
-            * @return
-            **/
-    JScrollPane flashtable(String name,String inventory,String soldprice,String importprice,String id,String type){
-        JTable newly = settable(name,inventory,soldprice,importprice,id,type);
-        scro = new JScrollPane(newly);
-        scro.setPreferredSize(new Dimension(770,440));
-        return scro;
-    }
+
 }

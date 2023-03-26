@@ -1,5 +1,6 @@
 package GUI;
 
+import Backcode.LoginUIcode;
 import Utiltool.GuiUtil.getMiddlelocation;
 import Utiltool.GuiUtil.showError;
 
@@ -46,8 +47,25 @@ public class LoginUI extends JFrame {
         button.setBounds(145, 160, 120, 30);
         root.add(button);
         button.addActionListener((e) -> {
-            UserUI.showUser();
-            login.dispose();
+            String uername = Act.getText();
+            String passworld = Psd.getText();
+            LoginUIcode a = new LoginUIcode();
+            //用户名密码结果判断
+            AdminUI ss = new AdminUI();
+            String flag = null;
+            try {
+                flag =a.judgeInformation(uername,passworld);
+            } catch (Exception ex) {
+                showError.showError("警告","用户名密码判断系统出错");
+                ex.printStackTrace();
+            }
+            switch (flag){
+                case "NOT FOUND USER":   showError.showError("错误","用户名不存在"); break;
+                case "PASSWORLD ERROR": showError.showError("错误","密码错误"); break;
+                case "PASS": UserUI.showUser(); login.dispose(); break;
+                case "ADMIN PASS": ss.generateadmin(); login.dispose(); break;
+            }
+
         });
 
 //        注册跳转
