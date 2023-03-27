@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class LoginUITest {
     public static void main(String[] args) {
-        LoginUI.showLogin();
+
     }
 
 }

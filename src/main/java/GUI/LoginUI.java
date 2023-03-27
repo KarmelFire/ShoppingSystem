@@ -1,6 +1,7 @@
 package GUI;
 
 import Backcode.LoginUIcode;
+import Backcode.useradd;
 import Utiltool.GuiUtil.getMiddlelocation;
 import Utiltool.GuiUtil.showError;
 
@@ -11,7 +12,8 @@ import java.awt.event.MouseListener;
 
 
 public class LoginUI extends JFrame {
-    public static void showLogin() {
+    String getname = null;
+    public void showLogin() {
 //        界面设置
         JFrame login = new JFrame();
         login.setSize(400, 300);
@@ -28,7 +30,6 @@ public class LoginUI extends JFrame {
         JLabel act = new JLabel("用户名");
         act.setBounds(60, 40, 50, 30);
         root.add(act);
-
         JTextField Act = new JTextField();
         Act.setBounds(130, 40, 150, 25);
         root.add(Act);
@@ -55,14 +56,16 @@ public class LoginUI extends JFrame {
             String flag = null;
             try {
                 flag =a.judgeInformation(uername,passworld);
+                getname = Act.getText();
             } catch (Exception ex) {
                 showError.showError("警告","用户名密码判断系统出错");
                 ex.printStackTrace();
             }
+            System.out.println("登录界面得到的用户名为" + getname);
             switch (flag){
                 case "NOT FOUND USER":   showError.showError("错误","用户名不存在"); break;
                 case "PASSWORLD ERROR": showError.showError("错误","密码错误"); break;
-                case "PASS": UserUI.showUser(); login.dispose(); break;
+                case "PASS": UserUI sss = new UserUI(); sss.setGetuser(getname); sss.showUser();login.dispose(); break;
                 case "ADMIN PASS": ss.generateadmin(); login.dispose(); break;
             }
 
@@ -110,5 +113,9 @@ public class LoginUI extends JFrame {
 
 //        显示窗口
         login.setVisible(true);
+    }
+
+    public void setGetname(String getname) {
+        this.getname = getname;
     }
 }
