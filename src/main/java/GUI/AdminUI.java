@@ -5,15 +5,14 @@ import Utiltool.GuiUtil.showError;
 import Utiltool.dbUtil.dbUtil;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 
 /*
  * @Author Langxecho
@@ -52,13 +51,15 @@ public class AdminUI {
         admin.add(addgoods);
         admin.add(delgoods);
         admin.add(searchgoods);
+        admin.setResizable(false);
 //        admin.add(emptysmall);
         //占位面板中的表格
 
         //外层滚动面板
         //生成表
         try {
-            scro = new JScrollPane(inittable());//滚动面板
+            inittable();
+            scro = new JScrollPane(table);//滚动面板
             scro.setPreferredSize(new Dimension(770,440));
             System.out.println("表格初始化成功");
         } catch (Exception e) {
@@ -101,9 +102,10 @@ public class AdminUI {
             @Override
             public void actionPerformed(ActionEvent e) {
 //                设置操作
-                ID = rowData[index][6];
                 try {
+                    ID = rowData[index][6];
                     delete();
+                    test();
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
@@ -152,8 +154,9 @@ public class AdminUI {
      * @Param
      * @return
      **/
-    public Object[][] rowData;
-    JTable inittable() throws Exception {
+    Object[][] rowData;
+    JTable table;
+    public void inittable() throws Exception {
         //加载数据库
         String sql = "Select * from goods";
         dbUtil db = new dbUtil();
@@ -176,13 +179,17 @@ public class AdminUI {
             rowData[rs.getRow() - 1][5] = rs.getString("store");
             rowData[rs.getRow() - 1][6] = rs.getString("id");
         }
-        JTable table = new JTable(rowData,columnName) {
+
+        table = new JTable(rowData,columnName) {
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
         table.getTableHeader().setReorderingAllowed(false);   //不可整列移动
         table.getTableHeader().setResizingAllowed(false);   //不可拉动表格
+
+
+
         db.closeConnection(con);
 
         table.addMouseListener(new MouseListener() {
@@ -211,7 +218,6 @@ public class AdminUI {
 
             }
         });
-        return table;
     }
 
     JTextField Name = new JTextField();
@@ -283,6 +289,7 @@ public class AdminUI {
         yes.addActionListener((e) -> {
             try {
                 add();
+                test();
                 frame.dispose();
                 showError.showError("添加商品", "添加成功");
             } catch (Exception ex) {
@@ -314,6 +321,13 @@ public class AdminUI {
         System.out.println("成功添加" + num + "条商品");
         statement.close();
         dbUtil.closeConnection(con);
+        Name.setText("");
+        Category.setText("");
+        Price.setText("");
+        Discount.setText("");
+        Portprice.setText("");
+        Store.setText("");
+        Id.setText("");
     }
 
     void delete() throws Exception {
@@ -327,5 +341,36 @@ public class AdminUI {
         dbUtil.closeConnection(con);
     }
 
+    Object[][] rowData1;
+
+    void test() throws Exception {
+        String sql = "Select * from goods";
+        dbUtil db = new dbUtil();
+        Connection con = db.getConnection();
+        PreparedStatement pstmt = con.prepareStatement(sql,ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+        ResultSet rs = pstmt.executeQuery();
+        //获取记录行数
+        rs.last();
+        int numbers = rs.getRow();
+        rs.beforeFirst();//指针归位
+        //表格相关设置
+        rowData = new Object[numbers][7];
+        while (rs.next()){
+            rowData[rs.getRow() - 1][0] = rs.getString("name");
+            rowData[rs.getRow() - 1][1] = rs.getString("category");
+            rowData[rs.getRow() - 1][2] = rs.getString("price");
+            rowData[rs.getRow() - 1][3] = rs.getString("discount");
+            rowData[rs.getRow() - 1][4] = rs.getString("portprice");
+            rowData[rs.getRow() - 1][5] = rs.getString("store");
+            rowData[rs.getRow() - 1][6] = rs.getString("id");
+        }
+        TableModel model = new DefaultTableModel(rowData, columnName);
+        table.setModel(model);
+        try {
+            db.closeConnection(con);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }
