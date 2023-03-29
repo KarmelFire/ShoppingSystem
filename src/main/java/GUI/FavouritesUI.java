@@ -11,13 +11,15 @@ import java.sql.ResultSet;
 public class FavouritesUI extends JPanel {
     String empty1 = "                                                                                                                                                                                                                                                                                                                                                                             ";
     Double finallypay = 0.0;
-
+    double discountpay = 0.0;
     int goodid[];//商品id
+    int vipflag;
     JTable table;
     int buynumber[];//用户选择的购买数量
     String goodname;//商品名
     String store;//商品存量
     int rownumber;//购物车中储存商品的数量
+    double vipdiscount;//vip的折扣
     public FavouritesUI(String getuser) {
         setLayout(null);
 
@@ -35,6 +37,9 @@ public class FavouritesUI extends JPanel {
             rs.next();
             //得到用户的id
             String userid = rs.getString("id");
+            //得到用户是否是vip身份
+            vipflag = rs.getInt("identity");
+            vipdiscount = vipflag == 2 ? 0.8 : 1;
             //查询购物车中的数据
             String sql2 = "select * from favourites where uesrid = ?";
             pre = con.prepareStatement(sql2,ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
@@ -53,7 +58,8 @@ public class FavouritesUI extends JPanel {
                 buynumber[re.getRow() - 1] = re.getInt("buynumber");
                 tableValues[re.getRow() - 1][2] = String.valueOf(re.getInt("buynumber"));
             }
-            //取得剩余的三个商品数据
+
+            //取得剩余的四个商品数据
             String sql3 = "select * from goods where id = ?";
             ResultSet re1;
             pre = con.prepareStatement(sql3,ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
@@ -65,6 +71,7 @@ public class FavouritesUI extends JPanel {
                 tableValues[i][1] = re1.getString("store");
                 tableValues[i][3] = String.valueOf((re1.getDouble("price") * buynumber[i]));
                 finallypay += re1.getDouble("price") * buynumber[i];
+                discountpay += re1.getDouble("price") * buynumber[i] * re1.getDouble("discount") * vipdiscount;
                 table = new JTable(tableValues, colunmName) {
                     public boolean isCellEditable(int row, int column) {
                         return false;
@@ -112,7 +119,7 @@ public class FavouritesUI extends JPanel {
             **/
     JLabel countbefore(){
         double count = 0;
-        JLabel label = new JLabel("原价总计:" + count + "                    ");
+        JLabel label = new JLabel("原价总计:" + finallypay + "                    ");
         return label;
     }
     /*
@@ -124,7 +131,7 @@ public class FavouritesUI extends JPanel {
             **/
     JLabel countafter(){
         double count = 0;
-        JLabel label = new JLabel("折后总计:" + count + "                                                                                                                                             ");
+        JLabel label = new JLabel("折后总计:" + discountpay + "                                                                                                                                             ");
         return label;
     }
 }
