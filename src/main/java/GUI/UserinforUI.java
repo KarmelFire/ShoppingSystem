@@ -249,8 +249,6 @@ public class UserinforUI extends JPanel {
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
-
-
             }
         });
         addbalance.add(input);
