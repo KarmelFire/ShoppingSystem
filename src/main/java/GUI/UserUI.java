@@ -38,7 +38,7 @@ public class UserUI extends JFrame{
         UserinforUI userinforUI = new UserinforUI(getuser);
         panel.add(userinforUI, "userinforUI");
 
-        FavouritesUI favouritesUI = new FavouritesUI();
+        FavouritesUI favouritesUI = new FavouritesUI(getuser);
         panel.add(favouritesUI, "favouritesUI");
 
         BuyinforUI buyinforUI = new BuyinforUI();

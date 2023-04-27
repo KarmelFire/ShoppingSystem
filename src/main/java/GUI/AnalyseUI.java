@@ -12,6 +12,7 @@ public class AnalyseUI {
     JButton print = new JButton("打印报表");//打印报表按钮
     SpinnerDateModel model = new SpinnerDateModel();
     JSpinner yeartext = new JSpinner(model);//年日期获取框
+    JSpinner monthtext = new JSpinner(model);//月份获取
     JButton monthreport = new JButton("月度报表");//月度报表按钮
     JButton yearreport = new JButton("年度报表");//年度报表按钮
     JButton yearsure = new JButton("确定");//年份确定按钮
@@ -34,18 +35,30 @@ public class AnalyseUI {
         yeartext.setValue(new Date());
         JSpinner.DateEditor editor = new JSpinner.DateEditor(yeartext,"yyyy");//"yyyy-MM-dd HH:mm:ss"
         yeartext.setEditor(editor);
+        JLabel month = new JLabel("月份:   ");
+        monthtext.setPreferredSize(new Dimension(90,25));
+        editor = new JSpinner.DateEditor(monthtext,"MM");
+        monthtext.setEditor(editor);
         window.add(guidang);
         window.add(yeartext);
+        window.add(month);
+        window.add(monthtext);
         //------------------------------------------------------------------------------------
         JLabel yuefen = new JLabel("月份:   ");
 //        monthtext.setSize(80,25);
-        JLabel sss = new JLabel("                                                                                                      ");
+        JLabel sss = new JLabel("                                                  ");
         monthreport.setSize(80,25);
         yearreport.setSize(80,25);
+
         window.add(sss);
         window.add(monthreport);
         window.add(yearreport);
-
+        //存放两个表格面板的主面板
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(776,450));
+        panel.setBackground(Color.BLUE);
+        //上表格(年或者月的总体)
+        window.add(panel);
         window.setVisible(true);
         return window;
     }
