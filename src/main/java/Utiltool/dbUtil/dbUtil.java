@@ -14,11 +14,11 @@ public class dbUtil {
     //mysql驱动名
     private static String driverName = "com.mysql.cj.jdbc.Driver";
     //数据库连接地址
-    private static String url = "jdbc:mysql://101.200.120.36:3306/shopping_system?useUnicode=true&characterEncoding=utf-8";
+    private static String url = "jdbc:mysql://106.14.246.27:3306/shoppingsystem?useUnicode=true&characterEncoding=utf-8";
     //用户名
     private static String userName = "root";
     //密码
-    private static String password = "ssy212";
+    private static String password = "kobe24";
     /*
      * @Author Langxecho
             * @Description //TODO 获取数据库连接
