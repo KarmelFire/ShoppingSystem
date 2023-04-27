@@ -19,6 +19,7 @@ public class LoginUI extends JFrame {
         login.setSize(400, 300);
         login.setTitle("账户登录");
         login.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        login.setLocationRelativeTo(null);
         login.setResizable(false);
 
 //        容器设置

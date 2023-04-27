@@ -3,7 +3,7 @@ package GUI;
 import Utiltool.GuiUtil.getMiddlelocation;
 import Utiltool.GuiUtil.showError;
 import Utiltool.dbUtil.dbUtil;
-import org.springframework.jdbc.support.JdbcUtils;
+
 
 import javax.swing.*;
 import java.awt.*;

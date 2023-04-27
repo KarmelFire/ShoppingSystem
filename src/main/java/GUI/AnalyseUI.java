@@ -1,67 +1,74 @@
 package GUI;
 
 import Utiltool.GuiUtil.getMiddlelocation;
+import Utiltool.dbUtil.dbUtil;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Date;
 
 public class AnalyseUI {
-    JFrame window = new JFrame("数据分析");//数据分析窗口
-    JButton back = new JButton("返回");//返回按钮
-    JButton print = new JButton("打印报表");//打印报表按钮
-    SpinnerDateModel model = new SpinnerDateModel();
-    JSpinner yeartext = new JSpinner(model);//年日期获取框
-    JSpinner monthtext = new JSpinner(model);//月份获取
-    JButton monthreport = new JButton("月度报表");//月度报表按钮
-    JButton yearreport = new JButton("年度报表");//年度报表按钮
-    JButton yearsure = new JButton("确定");//年份确定按钮
-    JButton monthsure = new JButton("确定");//月份确定按钮
-    JTable information = new JTable();//左边表格
-    JTable typeinformation = new JTable();//右边表格
-    JFrame analyseWindow(){
-        //窗口属性设置
-        window.setSize(800,600);
-        int a[] = getMiddlelocation.getMiddlelocate(window);
-        window.setLocation(a[0],a[1]);
-        window.setLayout(new FlowLayout(FlowLayout.LEFT));
-        //占位符设置
-//        JLabel ss = new JLabel("                                                                                                                                                                                                                             ");
-//        window.add(ss);
-        //窗口第一行组件设置
-        //spinner日期模式实例设置
-        yeartext.setPreferredSize(new Dimension(90,25));
-        JLabel guidang = new JLabel("        归档:    年份:   ");
-        yeartext.setValue(new Date());
-        JSpinner.DateEditor editor = new JSpinner.DateEditor(yeartext,"yyyy");//"yyyy-MM-dd HH:mm:ss"
-        yeartext.setEditor(editor);
-        JLabel month = new JLabel("月份:   ");
-        monthtext.setPreferredSize(new Dimension(90,25));
-        editor = new JSpinner.DateEditor(monthtext,"MM");
-        monthtext.setEditor(editor);
-        window.add(guidang);
-        window.add(yeartext);
-        window.add(month);
-        window.add(monthtext);
-        //------------------------------------------------------------------------------------
-        JLabel yuefen = new JLabel("月份:   ");
-//        monthtext.setSize(80,25);
-        JLabel sss = new JLabel("                                                  ");
-        monthreport.setSize(80,25);
-        yearreport.setSize(80,25);
+    int all;
+    int soldnumber;
+    double profits;
+JLabel l1 = new JLabel("商品总数量:" + all);
+JLabel l2 = new JLabel("销量:" + soldnumber);
+JLabel l3 = new JLabel("利润:" + profits + "元");
+JButton back = new JButton("返回");
+JButton printbutton = new JButton("打印报表");
+JButton datasave = new JButton("数据备份");
 
-        window.add(sss);
-        window.add(monthreport);
-        window.add(yearreport);
-        //存放两个表格面板的主面板
-        JPanel panel = new JPanel();
-        panel.setPreferredSize(new Dimension(776,450));
-        panel.setBackground(Color.BLUE);
-        //上表格(年或者月的总体)
-        window.add(panel);
-        window.setVisible(true);
-        return window;
+    public void startUI(){
+        JFrame frame = new JFrame("数据分析");
+        //这里添加初始化数据的方法
+        //frame的基本操作
+        frame.setSize(600,400);
+        int a[] = getMiddlelocation.getMiddlelocate(frame);
+        frame.setLocation(a[0],a[1]);
+        //设置所有的组件信息
+        //label设置
+        frame.setLayout(null);
+        l1.setBounds(45,15,300,60);
+        l1.setFont(new Font("SimSong",Font.BOLD,20));
+        l2.setBounds(45,55,300,60);
+        l2.setFont(new Font("SimSong",Font.BOLD,20));
+        l3.setBounds(45,95,300,60);
+        l3.setFont(new Font("SimSong",Font.BOLD,20));
+        frame.add(l1);
+        frame.add(l2);
+        frame.add(l3);
+        //按钮设置
+        back.setBounds(45,280,60,30);
+        back.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+            }
+        });
+        printbutton.setBounds(125,280,100,30);
+        datasave.setBounds(245,280,100,30);
+        frame.add(back);
+        frame.add(printbutton);
+        frame.add(datasave);
+        frame.setVisible(true);
     }
-
-
+    public void getdata() throws Exception {
+        all = 0;
+        String sql = "select category from goods";
+        dbUtil db = new dbUtil();
+        Connection con = db.getConnection();
+        PreparedStatement pstmt = con.prepareStatement(sql);
+        ResultSet rs = pstmt.executeQuery();
+        while(rs.next()){
+            all = all + rs.getInt("store");
+        }
+        //这里的init的数值是仓库里的总库存,当数据库设置好的时候需要将init的数值调整为当前数据库所有商品量的总和
+        int init =1000000;
+        soldnumber = init - all;
+    }
 }
