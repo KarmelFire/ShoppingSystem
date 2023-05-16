@@ -71,6 +71,7 @@ public class LoginUI extends JFrame {
 
         });
 
+
 //        注册跳转
         JLabel label = new JLabel("点击注册账号");
         label.setBounds(173, 190, 70, 25);
